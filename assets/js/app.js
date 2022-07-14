@@ -7,10 +7,15 @@ const main = function()
    var searchEl = document.getElementById("search");
    var searchInputEl = document.querySelector("#search input");
 
-   const baseRequestUrl = "https://api.openweathermap.org/data/3.0/onecall" + 
+   var recentSearchesEl = document.getElementById("recents");
+
+   const baseRequestUrl = "https://api.openweathermap.org/data/2.8/onecall" + 
       `?lat={lat}&lon={lon}&appid=${key.api}`;
    const baseGeoCodeUrl = "http://api.openweathermap.org/geo/1.0/direct" + 
       `?q={q}&limit=1&appid=${key.api}`;
+   
+   // Holds 3 recent searches
+   var recentSearches = [];
 
    // Fetch latitude and longitude from OpenWeatherMap Geocoding API
    async function fetchCoordinates(location) 
@@ -52,6 +57,9 @@ const main = function()
          return false
       else
       {
+         requestUrl = baseRequestUrl.replace("{lat}", lat);
+         requestUrl = requestUrl.replace("{lon}", lon);
+
          try {
             const response = await fetch(requestUrl,
                {
@@ -71,11 +79,30 @@ const main = function()
       }
    }
 
-   searchEl.addEventListener("submit", 
+   // Save Recent Search
+   function saveSearch(searchText)
+   {
+      if (  )
+   }
+
+   searchEl.addEventListener('submit', 
       (e)=>
       {
          e.preventDefault();
-         console.log(searchInputEl.value.split(","))
+         let locationObj = fetchCoordinates(searchInputEl.value);
+         locationObj.then( (locationData) => 
+            {
+               console.log(locationData[0]);
+
+               let weatherObj = fetchWeather(locationData[0].lat, 
+                        locationData[0].lon);
+               weatherObj.then( (weatherData) =>
+                  {
+                     console.log( weatherData );
+                  }
+               );
+            }
+         );
       }
    )
 
