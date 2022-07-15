@@ -12,7 +12,7 @@ const main = function()
 
    const baseRequestUrl = "https://api.openweathermap.org/data/2.8/onecall" + 
       `?lat={lat}&lon={lon}&appid=${key.api}`;
-   const baseGeoCodeUrl = "http://api.openweathermap.org/geo/1.0/direct" + 
+   const baseGeoCodeUrl = "https://api.openweathermap.org/geo/1.0/direct" + 
       `?q={q}&limit=1&appid=${key.api}`;
    
    // Holds 3 recent searches
@@ -144,7 +144,7 @@ const main = function()
       weatherMain_el.appendChild(mainImage_el);
       let iconId = owmData.current.weather[0].icon;
       mainImage_el.setAttribute("src", 
-         `http://openweathermap.org/img/wn/${iconId}@2x.png`);
+         `https://openweathermap.org/img/wn/${iconId}@2x.png`);
      
       let mainCondition = owmData.current.weather[0].main;
       mainImage_el.setAttribute("alt", mainCondition)
