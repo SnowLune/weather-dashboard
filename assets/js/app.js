@@ -28,7 +28,7 @@ const main = function()
 
       else
       {
-         requestUrl = baseGeoCodeUrl.replace("{q}", location);
+         requestUrl = baseGeoCodeUrl.replace("{q}", `"${location}"`);
 
          try 
          {
@@ -102,10 +102,28 @@ const main = function()
          (event) => 
          {
             searchInputEl.value = searchText;
-            //searchEl.submit();
-            return;
+            search( searchInputEl.value ); 
          }
       )
+   }
+
+   // Run Search
+   function search( searchText )
+   {
+      let locationObj = fetchCoordinates(searchInputEl.value);
+      locationObj.then( (locationData) => 
+         {
+            console.log(locationData[0]);
+
+            let weatherObj = fetchWeather(locationData[0].lat, 
+                     locationData[0].lon);
+            weatherObj.then( (weatherData) =>
+               {
+                  console.log( weatherData );
+               }
+            );
+         }
+      );
    }
 
    searchEl.addEventListener('submit', 
@@ -113,28 +131,9 @@ const main = function()
       {
          e.preventDefault();
          saveSearch(searchInputEl.value);
-
-         let locationObj = fetchCoordinates(searchInputEl.value);
-         locationObj.then( (locationData) => 
-            {
-               console.log(locationData[0]);
-
-               let weatherObj = fetchWeather(locationData[0].lat, 
-                        locationData[0].lon);
-               weatherObj.then( (weatherData) =>
-                  {
-                     console.log( weatherData );
-                  }
-               );
-            }
-         );
-      }
-   )
-
-   searchInputEl.addEventListener("search",
-      (e) =>
-      {
-         console.log(searchInputEl.value);
+         
+         // search for weather
+         search(searchInputEl.value);
       }
    )
 
