@@ -2,3 +2,40 @@
 {
    display: none;
 }
+
+strong {
+   weight: 600;
+}
+
+strong#Low
+{
+   color: #249712;
+}
+
+strong#Moderate
+{
+   color: #f0e927;
+}
+
+strong#High
+{
+   color: #f36214;
+}
+
+strong#VeryHigh
+{
+   color: #d41e18;
+}
+
+strong#Extreme
+{
+   color: #753bc9
+}
+
+nav, #main-content {
+   display: flex;
+   flex-direction: column;
+   flex-wrap: wrap;
+   justify-content: center;
+   align-items: center;
+}

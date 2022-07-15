@@ -190,10 +190,36 @@ const main = function()
          currentUvIndexName = "Extreme";
       }
 
-      uvIndex_el.
       uvIndex_el.innerHTML = `UV Index: ${owmData.current.uvi} `
             + `(<strong id=${currentUvIndexName.trim()}>${currentUvIndexName}`
             + `</strong>)`
+
+      // Future 5 days
+      for ( let i = 1; i < 6; i++ )
+      {
+         var daily_el = document.createElement("article");
+         mainContent_el.appendChild(daily_el);
+         var dailyDate_el = document.createElement("h3");
+         daily_el.appendChild(dailyDate_el);
+         let date = new Date(owmData.daily[i].dt * 1000)
+         dailyDate_el.textContent = date.toDateString();
+
+         // weather
+         var dailyMain_el = document.createElement("ul");
+         daily_el.appendChild(dailyMain_el);
+         var dailyMainCondition_el = document.createElement("li");
+         dailyMain_el.appendChild(dailyMainCondition_el);
+         var dailyMainIcon_el = document.createElement("img");
+         dailyMainCondition_el.appendChild(dailyMainIcon_el);
+         dailyMainIcon_el.setAttribute("src", 
+            `https://openweathermap.org/img/` 
+                  + `wn/${owmData.daily[i].weather[0].icon}.png`
+         );
+         var dailyMainDesc_el = document.createElement("span");
+         dailyMainCondition_el.appendChild(dailyMainDesc_el);
+         dailyMainDesc_el.textContent = owmData.daily[i].weather[0].main;
+
+      }
    }
 
    // Run Search
