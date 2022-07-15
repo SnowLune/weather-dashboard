@@ -8,6 +8,7 @@ const main = function()
    var searchInputEl = document.querySelector("#search input");
 
    var recentSearchesEl = document.getElementById("recents");
+   var recentsListEl = document.getElementById("recentsList");
 
    const baseRequestUrl = "https://api.openweathermap.org/data/2.8/onecall" + 
       `?lat={lat}&lon={lon}&appid=${key.api}`;
@@ -82,13 +83,37 @@ const main = function()
    // Save Recent Search
    function saveSearch(searchText)
    {
-      if (  )
+      if ( recentSearchesEl.style.display == false )
+      {
+         recentSearchesEl.style.display = "block";
+      }
+
+      recentSearches.push(searchText);
+      
+      var mostRecentListEl = document.createElement("li");
+      recentSearchesEl.appendChild(mostRecentListEl);
+
+      var mostRecentSearchEl = document.createElement("a");
+      mostRecentListEl.appendChild(mostRecentSearchEl);
+
+      mostRecentSearchEl.textContent = searchText;
+      mostRecentSearchEl.setAttribute("href", "#");
+      mostRecentSearchEl.addEventListener("click",
+         (event) => 
+         {
+            searchInputEl.value = searchText;
+            //searchEl.submit();
+            return;
+         }
+      )
    }
 
    searchEl.addEventListener('submit', 
       (e)=>
       {
          e.preventDefault();
+         saveSearch(searchInputEl.value);
+
          let locationObj = fetchCoordinates(searchInputEl.value);
          locationObj.then( (locationData) => 
             {
@@ -106,6 +131,14 @@ const main = function()
       }
    )
 
+   searchInputEl.addEventListener("search",
+      (e) =>
+      {
+         console.log(searchInputEl.value);
+      }
+   )
+
+   return true;
 }
 
 main();
