@@ -218,7 +218,26 @@ const main = function()
          var dailyMainDesc_el = document.createElement("span");
          dailyMainCondition_el.appendChild(dailyMainDesc_el);
          dailyMainDesc_el.textContent = owmData.daily[i].weather[0].main;
+        
+         // temp
+         var dailyHighLow_el = document.createElement("li");
+         dailyMain_el.appendChild(dailyHighLow_el);
+         dailyHighLow_el.textContent = `High: ${ 
+               Math.floor( owmData.daily[i].temp.max - 273.15 ) }` 
+            + ` / Low: ${
+               Math.floor( owmData.daily[i].temp.min - 273.15 ) }`;
 
+         // wind
+         var dailyWind_el = document.createElement("li");
+         dailyMain_el.appendChild(dailyWind_el);
+         dailyWind_el.textContent = `Wind Speed: ${
+            owmData.daily[i].wind_speed } m/s`;
+
+         // humidity
+         var dailyHumidity_el = document.createElement("li");
+         dailyMain_el.appendChild(dailyHumidity_el);
+         dailyHumidity_el.textContent = `Humidity: ${
+            owmData.daily[i].humidity}`;
       }
    }
 
