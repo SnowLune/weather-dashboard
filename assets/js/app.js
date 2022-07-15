@@ -108,7 +108,7 @@ const main = function()
    }
 
    // Create Weather UI Elements
-   function createForecastUi( owmData )
+   function createForecastUi( owmData, geoData )
    {
       // Main content div
       // remove old content first
@@ -120,6 +120,17 @@ const main = function()
       var mainContent_el = document.createElement("div");
       document.querySelector("body").appendChild(mainContent_el);
       mainContent_el.setAttribute("id", "main-content");
+      
+      // city name
+      var cityName_el = document.createElement("h2");
+      mainContent_el.appendChild(cityName_el);
+      cityName_el.textContent = `${ geoData.name }${ 
+         geoData.state ? ", " + geoData.state : "" }, ${ geoData.country }`;
+
+      // date
+      var date_el = document.createElement("h3");
+      mainContent_el.appendChild(date_el);
+      date_el.textContent = new Date(owmData.current.dt * 1000).toDateString();
 
       // current main div
       var currentMain_el = document.createElement("div");
@@ -237,7 +248,7 @@ const main = function()
          var dailyHumidity_el = document.createElement("li");
          dailyMain_el.appendChild(dailyHumidity_el);
          dailyHumidity_el.textContent = `Humidity: ${
-            owmData.daily[i].humidity}`;
+            owmData.daily[i].humidity}%`;
       }
    }
 
@@ -254,7 +265,7 @@ const main = function()
             weatherObj.then( (weatherData) =>
                {
                   console.log( weatherData );
-                  createForecastUi( weatherData );
+                  createForecastUi( weatherData, locationData[0] );
                }
             );
          }
