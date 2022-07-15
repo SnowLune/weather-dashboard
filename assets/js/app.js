@@ -107,6 +107,95 @@ const main = function()
       )
    }
 
+   // Create Weather UI Elements
+   function createForecastUi( owmData )
+   {
+      // Main content div
+      // remove old content first
+      let existingContent = document.getElementById("main-content");
+      if ( existingContent )
+      {
+         existingContent.remove();
+      }
+      var mainContent_el = document.createElement("div");
+      document.querySelector("body").appendChild(mainContent_el);
+      mainContent_el.setAttribute("id", "main-content");
+
+      // current main div
+      var currentMain_el = document.createElement("div");
+      mainContent_el.appendChild(currentMain_el);
+      // weather main div
+      var weatherMain_el = document.createElement("div");
+      currentMain_el.appendChild(weatherMain_el);
+
+      // main image
+      var mainImage_el = document.createElement("img");
+      weatherMain_el.appendChild(mainImage_el);
+      let iconId = owmData.current.weather[0].icon;
+      mainImage_el.setAttribute("src", 
+         `http://openweathermap.org/img/wn/${iconId}@2x.png`);
+     
+      let mainCondition = owmData.current.weather[0].main;
+      mainImage_el.setAttribute("alt", mainCondition)
+
+      // main text
+      var mainText_el = document.createElement("div");
+      weatherMain_el.appendChild(mainText_el);
+      mainText_el.textContent = mainCondition;
+
+      // current temp
+      var currentTemp_el = document.createElement("h2");
+      currentMain_el.appendChild(currentTemp_el);
+
+      let currentTemp = Math.floor(owmData.current.temp - 273.15) 
+            + "°C";
+      currentTemp_el.textContent = currentTemp;
+
+      // current additional
+      var currentAdditional_el = document.createElement("ul");
+      mainContent_el.appendChild(currentAdditional_el);
+
+      // Wind
+      var wind_el = document.createElement("li");
+      currentAdditional_el.appendChild(wind_el);
+      wind_el.textContent = `Wind Speed: ${owmData.current.wind_speed} m/s`;
+      // Humidity
+      var humidity_el = document.createElement("li");
+      currentAdditional_el.appendChild(humidity_el);
+      humidity_el.textContent = `Humidity: ${owmData.current.humidity}%`
+      // UV Index
+      var uvIndex_el = document.createElement("li");
+      currentAdditional_el.appendChild(uvIndex_el);
+      let currentUvIndex = owmData.current.uvi;
+      let currentUvIndexName;
+      let currentUvIndexColor;
+      if ( currentUvIndex < 3 )
+      {
+         currentUvIndexName = "Low";
+      }
+      else if ( currentUvIndex < 6 )
+      {
+         currentUvIndexName = "Moderate";
+      }
+      else if ( currentUvIndex < 8 )
+      {
+         currentUvIndexName = "High";
+      }
+      else if ( currentUvIndex < 11 )
+      {
+         currentUvIndexName = "Very High";
+      }
+      else
+      {
+         currentUvIndexName = "Extreme";
+      }
+
+      uvIndex_el.
+      uvIndex_el.innerHTML = `UV Index: ${owmData.current.uvi} `
+            + `(<strong id=${currentUvIndexName.trim()}>${currentUvIndexName}`
+            + `</strong>)`
+   }
+
    // Run Search
    function search( searchText )
    {
@@ -120,6 +209,7 @@ const main = function()
             weatherObj.then( (weatherData) =>
                {
                   console.log( weatherData );
+                  createForecastUi( weatherData );
                }
             );
          }
